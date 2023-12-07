@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decrypt Text from URL</title>
+</head>
+<body>
+    <script>
+        // Função para obter parâmetros da URL
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Função para descriptografar o texto (exemplo usando AES)
+        async function decryptText(encryptedText, key) {
+            // Implemente a função de descriptografia aqui
+            // Certifique-se de usar a mesma lógica de descriptografia que foi usada para criptografar o texto
+            // Neste exemplo, vamos usar CryptoJS para AES
+            const decrypted = CryptoJS.AES.decrypt(encryptedText, key);
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+
+        // Chave de descriptografia
+        const decryptionKey = "facb6b1d2c4b41d68ce98c5e59d76cdf";
+
+        // Obtém o texto criptografado da URL
+        const encryptedText = getParameterByName('vr');
+
+        // Descriptografa o texto
+        decryptText(encryptedText, decryptionKey)
+            .then(decrypted => {
+                console.log("Decrypted Text:", decrypted);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    </script>
+</body>
+</html>
